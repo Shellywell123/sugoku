@@ -15,7 +15,7 @@ func main() {
 
 	flag.Parse()
 
-	fmt.Println("file name: ", *file)
+	fmt.Println("\nfile name: ", *file)
 
 	if *file == "" {
 		fmt.Println("please specify a file")
@@ -24,7 +24,6 @@ func main() {
 
 	s := ImportSudukoFromFile(*file)
 	PrintSuduko(s)
-
 	s.Solve()
 	PrintSuduko(s)
 }

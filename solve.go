@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"slices"
 )
 
@@ -21,6 +22,7 @@ func Unique(slice []int) []int {
 		uniqSlice = append(uniqSlice, v)
 	}
 	return uniqSlice
+
 }
 
 // solve a cell by getting the unique set of numbers across row col square
@@ -115,59 +117,143 @@ func FindElementIndexsInSlice(slice []int, element int) []int {
 		}
 	}
 	return indexs
+
 }
 
-// // solve a cell by checking all other positions are blocked in the row
-// func (s Suduko) SolveSquareByRow(x int, y int) {
-// 	row := s.GetRow(y)
-// 	col := s.GetColumn(x)
-// 	sqa := s.GetSquare(x, y)
+// complete a row by checking all other positions are blocked
+func (s Suduko) SolveSquareByRow(y int) {
+	row := s.GetRow(y)
+	// get other possilbe positions in square todo
+	availableRowPostions := FindElementIndexsInSlice(row, 0)
 
-// 	rowSet := Unique(row)
-// 	colSet := Unique(col)
-// 	sqaSet := Unique(sqa)
+	choices := []int{}
+	for i := 1; i <= 9; i++ {
+		if !slices.Contains(Unique(row), i) {
+			choices = append(choices, i)
+		}
+	}
+	// fmt.Println(y, choices,Unique(row) )
 
-// 	set := Unique(slices.Concat(nil, rowSet, colSet, sqaSet))
+	for _, choice := range choices {
+		unblockedPositions := []int{}
+		positionsBlocked := 0
+		for _, position := range availableRowPostions {
+			positionBlocked := false
 
-// 	choices := []int{}
-// 	for n := 1; n <= 9; n++ {
+			coveringRowNumbers := Unique(s.GetColumn(position))
+			coveringSquareNumbers := Unique(s.GetSquare(position, y))
+			coveringSet := Unique(slices.Concat(nil, coveringRowNumbers, coveringSquareNumbers))
 
-// 		found := false
-// 		for _, m := range set {
-// 			if m == n {
-// 				found = true
-// 			}
-// 		}
+			if slices.Contains(coveringSet, choice) {
+				positionBlocked = true
+			}
 
-// 		if !found {
-// 			choices = append(choices, n)
-// 		}
-// 	}
+			if positionBlocked {
+				positionsBlocked++
+			} else {
+				unblockedPositions = append(unblockedPositions, position)
+			}
+		}
 
-// 	// get other possilbe positions in square todo
-// 	availableRowPostions := FindElementIndexsInSlice(row, 0)
+		if len(unblockedPositions) == 1 {
+			s.SetCell(unblockedPositions[0], y, choice)
+			break
+		}
+	}
+}
 
-// 	for _, choice := range choices {
-// 		// prove that the cell is the only place for the choice
+// complete a column by checking all other positions are blocked
+func (s Suduko) SolveSquareByColumn(x int) {
+	col := s.GetColumn(x)
+	// get other possilbe positions in square todo
+	availableRowPostions := FindElementIndexsInSlice(col, 0)
+	unblockedPositions := []int{}
 
-// 		choiceMustGoInsekectedcell := true
+	choices := []int{}
+	for i := 1; i <= 9; i++ {
+		if !slices.Contains(Unique(col), i) {
+			choices = append(choices, i)
+		}
 
-// 		for _, position := range availableRowPostions {
-// 			positionBlocked := false
-// 			for num := range GetColumn(position , y) {
-// 				if choice == number {
-// 					positionBlocked = true
-// 				}
+	}
+	// fmt.Println(choices,Unique(col) )
 
-// 			}
-// 		}
+	for _, choice := range choices {
+		positionsBlocked := 0
+		for _, position := range availableRowPostions {
+			positionBlocked := false
 
-// 		if !choiceMustGoInsekectedcell {
-// 			s.SetCell(x, y, choice)
-// 			break
-// 		}
-// 	}
-// }
+			coveringColumnNumbers := Unique(s.GetRow(position))
+			coveringSquareNumbers := Unique(s.GetSquare(x, position))
+			coveringSet := Unique(slices.Concat(nil, coveringColumnNumbers, coveringSquareNumbers))
+
+			if slices.Contains(coveringSet, choice) {
+				positionBlocked = true
+			}
+
+			if positionBlocked {
+				positionsBlocked++
+			} else {
+				unblockedPositions = append(unblockedPositions, position)
+			}
+		}
+
+		if len(unblockedPositions) == 1 {
+			s.SetCell(x, unblockedPositions[0], choice)
+			break
+		}
+	}
+}
+
+func duplicateDetect(slice []int) bool {
+	elements := []int{}
+	for _, e := range slice {
+		if e == 0 {
+			continue
+		}
+
+		if slices.Contains(elements, e) {
+			fmt.Println(e)
+			return true
+		} else {
+			elements = append(elements, e)
+		}
+	}
+	return false
+}
+
+// check every box, row, col contains no duplicate numbers
+func (s Suduko) Validate() {
+
+	for x := 0; x < 9; x++ {
+		if duplicateDetect(s.GetColumn(x)) {
+			PrintSuduko(s)
+			fmt.Println("duplicate detected in column", x)
+			os.Exit(0)
+		}
+	}
+
+	for y := 0; y < 9; y++ {
+		if duplicateDetect(s.GetRow(y)) {
+			PrintSuduko(s)
+			fmt.Println("duplicate detected in row", y)
+			os.Exit(0)
+
+		}
+	}
+
+	for x := 0; x < 9; x += 3 {
+		for y := 0; y < 9; y += 3 {
+			if duplicateDetect(s.GetSquare(x, y)) {
+				PrintSuduko(s)
+				fmt.Println("duplicate detected in row", y)
+				os.Exit(0)
+
+			}
+		}
+	}
+
+}
 
 // main solve function
 func (s Suduko) Solve() {
@@ -175,22 +261,47 @@ func (s Suduko) Solve() {
 	cBefore := s.GetCompleted()
 
 	// loop through all cells in the 9x9 grid
-	for x := 0; x < 9; x++ {
-		for y := 0; y < 9; y++ {
+	for y := 0; y < 9; y++ {
 
+		// if row complete skip
+		if len(Unique(s.GetRow(y))) == 9 {
+			continue
+		}
+
+		s.SolveSquareByRow(y)
+
+	}
+
+	// loop through all cells in the 9x9 grid
+	for y := 0; y < 9; y++ {
+
+		for x := 0; x < 9; x++ {
+
+			// if cell populated skip
 			if s.GetCell(x, y) != 0 {
 				continue
 			}
 
 			s.SolveUnique(x, y)
-			// s.SolveSquareByBlocked(x,y)
-			// s.SolveRowByBlocked(x,y)
-			// s.SolveColumnByBlocked(x,y)
 		}
 	}
+
+	for x := 0; x < 9; x++ {
+
+		// if col complete skip
+		if len(Unique(s.GetColumn(x))) == 9 {
+			continue
+		}
+
+		s.SolveSquareByColumn(x)
+	}
+
+	s.Validate()
+
 	cAfter := s.GetCompleted()
 
 	fmt.Printf("Cells completed (%d/81)\n", cAfter)
+	// PrintSuduko(s)
 
 	// if we completed more numbers recur
 	if cBefore != cAfter {
