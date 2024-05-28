@@ -5,14 +5,14 @@ package main
 type suduko interface {
 	SetCell(x int, y int, v int)
 	GetCell(x int, y int)
-    GetRow(y int)
+	GetRow(y int)
 	GetColumn(x int)
 	GetSquare(sx int, sy int)
 	GetCompleted()
 }
 
 type Suduko struct {
-    Grid [][]int 
+	Grid      [][]int
 	Completed int
 }
 
@@ -25,7 +25,7 @@ func (s *Suduko) SetCell(x int, y int, v int) {
 }
 
 func (s Suduko) GetRow(y int) []int {
-    return s.Grid[y]
+	return s.Grid[y]
 }
 
 func (s *Suduko) SetRow(y int, r []int) {
@@ -43,25 +43,25 @@ func (s Suduko) GetColumn(x int) []int {
 func (s Suduko) GetSquare(x int, y int) []int {
 
 	// i dont like how this is written
-	sx := 0 
+	sx := 0
 	sy := 0
 
 	if 0 <= x && x <= 2 {
 		sx = 0
-	} 
+	}
 	if 3 <= x && x <= 5 {
 		sx = 1
-	} 
+	}
 	if 6 <= x && x <= 8 {
 		sx = 2
-	} 
-	
+	}
+
 	if 0 <= y && y <= 2 {
 		sy = 0
-	} 
+	}
 	if 3 <= y && y <= 5 {
 		sy = 1
-	} 
+	}
 	if 6 <= y && y <= 8 {
 		sy = 2
 	}
@@ -70,7 +70,7 @@ func (s Suduko) GetSquare(x int, y int) []int {
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
 			square = append(square, s.GetCell(sx*3+j, sy*3+i))
-		} 
+		}
 	}
 
 	return square
@@ -78,11 +78,11 @@ func (s Suduko) GetSquare(x int, y int) []int {
 
 func (s Suduko) GetCompleted() int {
 
-	c := 0 
+	c := 0
 	for x := 0; x < 9; x++ {
 		for y := 0; y < 9; y++ {
 			if s.GetCell(x, y) != 0 {
-				c ++
+				c++
 			}
 		}
 	}

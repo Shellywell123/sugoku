@@ -10,7 +10,7 @@ import (
 
 // function to create a suduko object from a input txt file
 func ImportSudukoFromFile(filename string) Suduko {
-	file, err := os.Open("sudukos/" + filename)
+	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Println(err)
 	}

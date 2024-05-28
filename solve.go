@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"slices"
-
-	"golang.org/x/text/number"
 )
 
 // Returns unique items in a slice
@@ -27,7 +25,7 @@ func Unique(slice []int) []int {
 
 // solve a cell by getting the unique set of numbers across row col square
 func (s Suduko) SolveUnique(x int, y int) {
-	
+
 	row := s.GetRow(y)
 	col := s.GetColumn(x)
 	sqa := s.GetSquare(x, y)
@@ -40,7 +38,7 @@ func (s Suduko) SolveUnique(x int, y int) {
 
 	if len(set) == 8 {
 		for n := 1; n <= 9; n++ {
-			
+
 			found := false
 			for _, m := range set {
 				if m == n {
@@ -70,7 +68,7 @@ func (s Suduko) SolveUnique(x int, y int) {
 
 // 	choices := []int{}
 // 	for n := 1; n <= 9; n++ {
-		
+
 // 		found := false
 // 		for _, m := range set {
 // 			if m == n {
@@ -108,63 +106,68 @@ func (s Suduko) SolveUnique(x int, y int) {
 // 	}
 // }
 
-// solve a cell by checking all other positions are blocked in the row
-func (s Suduko) SolveSquareByRow(x int, y int) {
-	row := s.GetRow(y)
-	col := s.GetColumn(x)
-	sqa := s.GetSquare(x, y)
+func FindElementIndexsInSlice(slice []int, element int) []int {
 
-	rowSet := Unique(row)
-	colSet := Unique(col)
-	sqaSet := Unique(sqa)
-
-	set := Unique(slices.Concat(nil, rowSet, colSet, sqaSet))
-
-	choices := []int{}
-	for n := 1; n <= 9; n++ {
-		
-		found := false
-		for _, m := range set {
-			if m == n {
-				found = true
-			}
-		}
-
-		if !found {
-			choices = append(choices, n)
+	indexs := []int{}
+	for i, e := range slice {
+		if e == element {
+			indexs = append(indexs, i)
 		}
 	}
-
-	// get other possilbe positions in square todo
-
-	availableRowPostions := slices.Index(row, 0) // need a list of index not singular!
-	// positions := [][]int{} x,y coords
-
-	for _, choice := range choices {
-		// prove that the cell is the only place for the choice
-
-		choiceMustGoInsekectedcell := true
-
-		// logic todo
-		if logic {
-			choiceMustGoInsekectedcell = false
-		}
-		for _, position := range availableRowPostions {
-			positionBlocked := false
-			for num := range GetColumn(position , y) {
-				if choice == number {
-					positionBlocked = true
-				}
-				
-			}
-		}
-
-		if !choiceMustGoInsekectedcell {
-			s.SetCell(x, y, choice)
-			break
-		}
-	}
+	return indexs
 }
+
+// // solve a cell by checking all other positions are blocked in the row
+// func (s Suduko) SolveSquareByRow(x int, y int) {
+// 	row := s.GetRow(y)
+// 	col := s.GetColumn(x)
+// 	sqa := s.GetSquare(x, y)
+
+// 	rowSet := Unique(row)
+// 	colSet := Unique(col)
+// 	sqaSet := Unique(sqa)
+
+// 	set := Unique(slices.Concat(nil, rowSet, colSet, sqaSet))
+
+// 	choices := []int{}
+// 	for n := 1; n <= 9; n++ {
+
+// 		found := false
+// 		for _, m := range set {
+// 			if m == n {
+// 				found = true
+// 			}
+// 		}
+
+// 		if !found {
+// 			choices = append(choices, n)
+// 		}
+// 	}
+
+// 	// get other possilbe positions in square todo
+// 	availableRowPostions := FindElementIndexsInSlice(row, 0)
+
+// 	for _, choice := range choices {
+// 		// prove that the cell is the only place for the choice
+
+// 		choiceMustGoInsekectedcell := true
+
+// 		for _, position := range availableRowPostions {
+// 			positionBlocked := false
+// 			for num := range GetColumn(position , y) {
+// 				if choice == number {
+// 					positionBlocked = true
+// 				}
+
+// 			}
+// 		}
+
+// 		if !choiceMustGoInsekectedcell {
+// 			s.SetCell(x, y, choice)
+// 			break
+// 		}
+// 	}
+// }
 
 // main solve function
 func (s Suduko) Solve() {

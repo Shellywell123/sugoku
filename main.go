@@ -1,9 +1,28 @@
 package main
 
+import (
+	"flag"
+	"fmt"
+	"os"
+)
+
+var (
+	file = flag.String("file", "", "file-name")
+)
+
 // entrypoint
 func main() {
 
-	s := ImportSudukoFromFile("s14a.txt")
+	flag.Parse()
+
+	fmt.Println("file name: ", *file)
+
+	if *file == "" {
+		fmt.Println("please specify a file")
+		os.Exit(0)
+	}
+
+	s := ImportSudukoFromFile(*file)
 	PrintSuduko(s)
 
 	s.Solve()
