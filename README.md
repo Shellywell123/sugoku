@@ -1,1 +1,5 @@
 # suduko-go
+
+```
+go run .
+```
