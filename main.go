@@ -22,8 +22,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	s := ImportSudukoFromFile(*file)
-	PrintSuduko(s)
+	s := ImportSudokuFromFile(*file)
+	PrintSudoku(s)
 	s.Solve()
-	PrintSuduko(s)
+	PrintSudoku(s)
 }

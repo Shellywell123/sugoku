@@ -2,7 +2,7 @@ package main
 
 // import "fmt"
 
-type suduko interface {
+type sudoku interface {
 	SetCell(x int, y int, v int)
 	GetCell(x int, y int)
 	GetRow(y int)
@@ -11,28 +11,28 @@ type suduko interface {
 	GetCompleted()
 }
 
-type Suduko struct {
+type Sudoku struct {
 	Grid      [][]int
 	Completed int
 }
 
-func (s Suduko) GetCell(x int, y int) int {
+func (s Sudoku) GetCell(x int, y int) int {
 	return s.Grid[y][x]
 }
 
-func (s *Suduko) SetCell(x int, y int, v int) {
+func (s *Sudoku) SetCell(x int, y int, v int) {
 	s.Grid[y][x] = v
 }
 
-func (s Suduko) GetRow(y int) []int {
+func (s Sudoku) GetRow(y int) []int {
 	return s.Grid[y]
 }
 
-func (s *Suduko) SetRow(y int, r []int) {
+func (s *Sudoku) SetRow(y int, r []int) {
 	s.Grid[y] = r
 }
 
-func (s Suduko) GetColumn(x int) []int {
+func (s Sudoku) GetColumn(x int) []int {
 	column := []int{}
 	for i := 0; i < 9; i++ {
 		column = append(column, s.Grid[i][x])
@@ -40,7 +40,7 @@ func (s Suduko) GetColumn(x int) []int {
 	return column
 }
 
-func (s Suduko) GetSquare(x int, y int) []int {
+func (s Sudoku) GetSquare(x int, y int) []int {
 
 	// i dont like how this is written
 	sx := 0
@@ -76,7 +76,7 @@ func (s Suduko) GetSquare(x int, y int) []int {
 	return square
 }
 
-func (s Suduko) GetCompleted() int {
+func (s Sudoku) GetCompleted() int {
 
 	c := 0
 	for x := 0; x < 9; x++ {

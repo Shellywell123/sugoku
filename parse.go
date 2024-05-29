@@ -8,15 +8,15 @@ import (
 	"strings"
 )
 
-// function to create a suduko object from a input txt file
-func ImportSudukoFromFile(filename string) Suduko {
+// function to create a sudoku object from a input txt file
+func ImportSudokuFromFile(filename string) Sudoku {
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fscanner := bufio.NewScanner(file)
 
-	suduko := Suduko{Grid: make([][]int, 10)}
+	sudoku := Sudoku{Grid: make([][]int, 10)}
 
 	y := 0
 	for fscanner.Scan() {
@@ -35,15 +35,15 @@ func ImportSudukoFromFile(filename string) Suduko {
 			row = append(row, num)
 		}
 
-		suduko.SetRow(y, row)
+		sudoku.SetRow(y, row)
 		y++
 	}
 
-	return suduko
+	return sudoku
 }
 
-// simple funciton to pretty print a sudukos current state in the terminal
-func PrintSuduko(s Suduko) {
+// simple funciton to pretty print a sudokus current state in the terminal
+func PrintSudoku(s Sudoku) {
 
 	for rNumber, r := range s.Grid {
 		if rNumber%3 == 0 || rNumber == 0 {

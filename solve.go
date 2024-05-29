@@ -26,7 +26,7 @@ func Unique(slice []int) []int {
 }
 
 // solve a cell by getting the unique set of numbers across row col square
-func (s Suduko) SolveUnique(x int, y int) {
+func (s Sudoku) SolveUnique(x int, y int) {
 
 	row := s.GetRow(y)
 	col := s.GetColumn(x)
@@ -57,7 +57,7 @@ func (s Suduko) SolveUnique(x int, y int) {
 }
 
 // // solve a cell by checking all other positions are blocked in the square
-// func (s Suduko) SolveSquareByBlocked(x int, y int) {
+// func (s Sudoku) SolveSquareByBlocked(x int, y int) {
 // 	row := s.GetRow(y)
 // 	col := s.GetColumn(x)
 // 	sqa := s.GetSquare(x, y)
@@ -83,17 +83,17 @@ func (s Suduko) SolveUnique(x int, y int) {
 // 		}
 // 	}
 
-// 	// get other possilbe positions in square todo
+// 	// get other possible positions in square todo
 // 	// positions := [][]int{} x,y coords
 
 // 	for _, choice := range choices {
 // 		// prove that the cell is the only place for the choice
 
-// 		choiceMustGoInsekectedcell := true
+// 		choiceMustGoInSelectedCell := true
 
 // 		// logic todo
 // 		if logic {
-// 			choiceMustGoInsekectedcell = false
+// 			choiceMustGoInSelectedCell = false
 // 		}
 // 		for _, position := range positions {
 // 			if choice in GetRow(position x , position y) {
@@ -101,30 +101,30 @@ func (s Suduko) SolveUnique(x int, y int) {
 // 			}
 // 		}
 
-// 		if !choiceMustGoInsekectedcell {
+// 		if !choiceMustGoInSelectedCell {
 // 			s.SetCell(x, y, choice)
 // 			break
 // 		}
 // 	}
 // }
 
-func FindElementIndexsInSlice(slice []int, element int) []int {
+func FindElementIndexesInSlice(slice []int, element int) []int {
 
-	indexs := []int{}
+	Indexes := []int{}
 	for i, e := range slice {
 		if e == element {
-			indexs = append(indexs, i)
+			Indexes = append(Indexes, i)
 		}
 	}
-	return indexs
+	return Indexes
 
 }
 
 // complete a row by checking all other positions are blocked
-func (s Suduko) SolveSquareByRow(y int) {
+func (s Sudoku) SolveSquareByRow(y int) {
 	row := s.GetRow(y)
-	// get other possilbe positions in square todo
-	availableRowPostions := FindElementIndexsInSlice(row, 0)
+	// get other possible positions in square todo
+	availableRowPositions := FindElementIndexesInSlice(row, 0)
 
 	choices := []int{}
 	for i := 1; i <= 9; i++ {
@@ -132,12 +132,11 @@ func (s Suduko) SolveSquareByRow(y int) {
 			choices = append(choices, i)
 		}
 	}
-	// fmt.Println(y, choices,Unique(row) )
 
 	for _, choice := range choices {
 		unblockedPositions := []int{}
 		positionsBlocked := 0
-		for _, position := range availableRowPostions {
+		for _, position := range availableRowPositions {
 			positionBlocked := false
 
 			coveringRowNumbers := Unique(s.GetColumn(position))
@@ -163,10 +162,10 @@ func (s Suduko) SolveSquareByRow(y int) {
 }
 
 // complete a column by checking all other positions are blocked
-func (s Suduko) SolveSquareByColumn(x int) {
+func (s Sudoku) SolveSquareByColumn(x int) {
 	col := s.GetColumn(x)
-	// get other possilbe positions in square todo
-	availableRowPostions := FindElementIndexsInSlice(col, 0)
+	// get other possible positions in square todo
+	availableRowPositions := FindElementIndexesInSlice(col, 0)
 	unblockedPositions := []int{}
 
 	choices := []int{}
@@ -180,7 +179,7 @@ func (s Suduko) SolveSquareByColumn(x int) {
 
 	for _, choice := range choices {
 		positionsBlocked := 0
-		for _, position := range availableRowPostions {
+		for _, position := range availableRowPositions {
 			positionBlocked := false
 
 			coveringColumnNumbers := Unique(s.GetRow(position))
@@ -223,11 +222,11 @@ func duplicateDetect(slice []int) bool {
 }
 
 // check every box, row, col contains no duplicate numbers
-func (s Suduko) Validate() {
+func (s Sudoku) Validate() {
 
 	for x := 0; x < 9; x++ {
 		if duplicateDetect(s.GetColumn(x)) {
-			PrintSuduko(s)
+			PrintSudoku(s)
 			fmt.Println("duplicate detected in column", x)
 			os.Exit(0)
 		}
@@ -235,7 +234,7 @@ func (s Suduko) Validate() {
 
 	for y := 0; y < 9; y++ {
 		if duplicateDetect(s.GetRow(y)) {
-			PrintSuduko(s)
+			PrintSudoku(s)
 			fmt.Println("duplicate detected in row", y)
 			os.Exit(0)
 
@@ -245,7 +244,7 @@ func (s Suduko) Validate() {
 	for x := 0; x < 9; x += 3 {
 		for y := 0; y < 9; y += 3 {
 			if duplicateDetect(s.GetSquare(x, y)) {
-				PrintSuduko(s)
+				PrintSudoku(s)
 				fmt.Println("duplicate detected in row", y)
 				os.Exit(0)
 
@@ -256,7 +255,7 @@ func (s Suduko) Validate() {
 }
 
 // main solve function
-func (s Suduko) Solve() {
+func (s Sudoku) Solve() {
 
 	cBefore := s.GetCompleted()
 
@@ -301,7 +300,7 @@ func (s Suduko) Solve() {
 	cAfter := s.GetCompleted()
 
 	fmt.Printf("Cells completed (%d/81)\n", cAfter)
-	// PrintSuduko(s)
+	// PrintSudoku(s)
 
 	// if we completed more numbers recur
 	if cBefore != cAfter {
