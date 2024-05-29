@@ -321,5 +321,7 @@ func (s Sudoku) Solve() {
 	// if we completed more numbers recur
 	if cBefore != cAfter {
 		s.Solve()
+	} else {
+		fmt.Println(s.GetName(), float32(cAfter)/float32(81)*100, "% Completed")
 	}
 }

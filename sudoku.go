@@ -1,8 +1,8 @@
 package main
 
-// import "fmt"
-
 type sudoku interface {
+	GetName()
+	SetName(name string)
 	SetCell(x int, y int, v int)
 	GetCell(x int, y int)
 	GetRow(y int)
@@ -14,6 +14,15 @@ type sudoku interface {
 type Sudoku struct {
 	Grid      [][]int
 	Completed int
+	Name      string
+}
+
+func (s Sudoku) GetName() string {
+	return s.Name
+}
+
+func (s *Sudoku) SetName(name string) {
+	s.Name = name
 }
 
 func (s Sudoku) GetCell(x int, y int) int {

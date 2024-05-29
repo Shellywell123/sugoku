@@ -17,6 +17,7 @@ func ImportSudokuFromFile(filename string) Sudoku {
 	fscanner := bufio.NewScanner(file)
 
 	sudoku := Sudoku{Grid: make([][]int, 10)}
+	sudoku.SetName(filename)
 
 	y := 0
 	for fscanner.Scan() {
