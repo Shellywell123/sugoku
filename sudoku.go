@@ -42,7 +42,7 @@ func (s Sudoku) GetColumn(x int) []int {
 
 func (s Sudoku) GetSquare(x int, y int) []int {
 
-	// i dont like how this is written
+	// i do not like how this is written
 	sx := 0
 	sy := 0
 

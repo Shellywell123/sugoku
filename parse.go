@@ -42,7 +42,7 @@ func ImportSudokuFromFile(filename string) Sudoku {
 	return sudoku
 }
 
-// simple funciton to pretty print a sudokus current state in the terminal
+// simple function to pretty print a sudokus current state in the terminal
 func PrintSudoku(s Sudoku) {
 
 	for rNumber, r := range s.Grid {
