@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math"
+)
+
 type sudoku interface {
 	GetName()
 	SetName(name string)
@@ -51,29 +55,10 @@ func (s Sudoku) GetColumn(x int) []int {
 
 func (s Sudoku) GetSquare(x int, y int) []int {
 
-	// i do not like how this is written
-	sx := 0
-	sy := 0
+	// get square position 
+	sx := int(math.Floor(float64(x)/3))
+	sy := int(math.Floor(float64(y)/3))
 
-	if 0 <= x && x <= 2 {
-		sx = 0
-	}
-	if 3 <= x && x <= 5 {
-		sx = 1
-	}
-	if 6 <= x && x <= 8 {
-		sx = 2
-	}
-
-	if 0 <= y && y <= 2 {
-		sy = 0
-	}
-	if 3 <= y && y <= 5 {
-		sy = 1
-	}
-	if 6 <= y && y <= 8 {
-		sy = 2
-	}
 	square := []int{}
 
 	for i := 0; i < 3; i++ {

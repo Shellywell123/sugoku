@@ -4,7 +4,19 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"math"
 )
+
+// function to return all the indexes of an element in a slice
+func FindElementIndexesInSlice(slice []int, element int) []int {
+	Indexes := []int{}
+	for i, e := range slice {
+		if e == element {
+			Indexes = append(Indexes, i)
+		}
+	}
+	return Indexes
+}
 
 // Returns unique items in a slice
 func Unique(slice []int) []int {
@@ -40,6 +52,7 @@ func (s Sudoku) SolveUnique(x int, y int) {
 
 	options := s.GetOptions(x, y)
 
+	// if only 1 cell left to complete
 	if len(options) == 8 {
 		for n := 1; n <= 9; n++ {
 
@@ -56,16 +69,6 @@ func (s Sudoku) SolveUnique(x int, y int) {
 			}
 		}
 	}
-}
-
-func FindElementIndexesInSlice(slice []int, element int) []int {
-	Indexes := []int{}
-	for i, e := range slice {
-		if e == element {
-			Indexes = append(Indexes, i)
-		}
-	}
-	return Indexes
 }
 
 // complete a row by checking all other positions are blocked
@@ -159,32 +162,13 @@ func (s Sudoku) SolveSquareByBlocked(x int, y int) {
 		s.GetSquare(x, y)[6:9],
 	} {
 		for ex, e := range row {
-			// i do not like how this is written
-			sx := 0
-			sy := 0
 
-			if 0 <= x && x <= 2 {
-				sx = 0
-			}
-			if 3 <= x && x <= 5 {
-				sx = 3
-			}
-			if 6 <= x && x <= 8 {
-				sx = 6
-			}
-
-			if 0 <= y && y <= 2 {
-				sy = 0
-			}
-			if 3 <= y && y <= 5 {
-				sy = 3
-			}
-			if 6 <= y && y <= 8 {
-				sy = 6
-			}
+			// retrieve cell x, y position
+			cx := (3 * int(math.Floor(float64(x)/3))) + ex
+			cy := (3 * int(math.Floor(float64(y)/3))) + ey
 
 			if e == 0 {
-				availableSquarePositions = append(availableSquarePositions, []int{sx + ex, sy + ey})
+				availableSquarePositions = append(availableSquarePositions, []int{cx , cy})
 			}
 		}
 	}
@@ -217,12 +201,12 @@ func (s Sudoku) SolveSquareByBlocked(x int, y int) {
 
 		if len(unblockedPositions) == 1 {
 			s.SetCell(unblockedPositions[0][0], unblockedPositions[0][1], choice)
-			// fmt.Println("inputtin", choice, "into", unblockedPositions[0][0], unblockedPositions[0][1])
 			break
 		}
 	}
 }
 
+// returns true if a slice contains duplicate elements
 func duplicateDetect(slice []int) bool {
 	elements := []int{}
 	for _, e := range slice {
