@@ -2,9 +2,10 @@
 
 Simple CLI binary written in go to solve [sudoku](https://en.wikipedia.org/wiki/Sudoku) puzzles from `.txt` inputs.
 
-The numbers should be space delimited with a missing number denoted with a `0`. See the `sudokus/` dir for examples.
+The numbers should be space delimited with a missing number denoted with a `0`. 
+See the `sudokus/` dir for examples.
 
-I decided against using brute force as I wanted to exercise automating the algorithms I use by hand.
+I decided against using a brute force algorithm as I wanted to exercise automating the algorithms I use by hand.
 
 ## build the binary
 ```
