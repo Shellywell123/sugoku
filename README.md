@@ -1,4 +1,4 @@
-# sudoku-go
+# sugoku
 
 Simple CLI binary written in go to solve [sudoku](https://en.wikipedia.org/wiki/Sudoku) puzzles from `.txt` inputs.
 
